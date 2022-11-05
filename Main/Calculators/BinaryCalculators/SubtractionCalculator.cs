@@ -3,9 +3,9 @@
 
 namespace Main.Calculators.BinaryCalculators
 {
-    public class SubtractionCalculator : BinaryCalculator
+    public class SubtractionCalculator : IBinaryCalculator
     {
-        override
+        
         public double Calculate(double x, double y)
         {
             return x - y;

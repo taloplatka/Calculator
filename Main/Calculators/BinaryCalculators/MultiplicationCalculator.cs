@@ -4,9 +4,9 @@ using Main.Calculators.Abstract;
 
 namespace Main.Calculators.BinaryCalculators
 {
-    public class MultiplicationCalculator : BinaryCalculator
+    public class MultiplicationCalculator : IBinaryCalculator
     {
-        override
+        
         public double Calculate(double x, double y)
         {
             return x * y;

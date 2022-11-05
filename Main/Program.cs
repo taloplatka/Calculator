@@ -1,8 +1,7 @@
-﻿using Main.Calculators.BinaryCalculators;
-using Main.Dictionaries;
+﻿using Main.Calculators.Abstract;
+using Main.Calculators.BinaryCalculators;
 using Main.Parsers;
-using System;
-
+using Main.Validators;
 
 namespace Program
 {
@@ -10,36 +9,36 @@ namespace Program
     {
         public static void Main(string[] args)
         {
-            var Parser = new BinaryParser();
-
             var AdditionCalculator = new AdditionCalculator();
             var SubtractionCalculator = new SubtractionCalculator();
             var MultiplicationCalculator = new MultiplicationCalculator();
             var DivisionCalculator = new DivisionCalculator();
 
-            var BinaryOperationToFunction = new BinaryOperationToFunction();
-            BinaryOperationToFunction.Set("+", AdditionCalculator);
-            BinaryOperationToFunction.Set("-", SubtractionCalculator);
-            BinaryOperationToFunction.Set("/", DivisionCalculator);
-            BinaryOperationToFunction.Set("*", MultiplicationCalculator);
+            var BinaryOperationToFunction = new Dictionary<char, IBinaryCalculator>();
+            BinaryOperationToFunction.Add('+', AdditionCalculator);
+            BinaryOperationToFunction.Add('-', SubtractionCalculator);
+            BinaryOperationToFunction.Add('/', DivisionCalculator);
+            BinaryOperationToFunction.Add('*', MultiplicationCalculator);
+            var Parser = new BinaryParser(BinaryOperationToFunction.Keys.ToList());
 
+            List<IBinaryExerciseValidator> validators = new List<IBinaryExerciseValidator>();
+            validators.Add(new DivisionByZeroValidator());
 
             string input = Console.ReadLine();
 
-            var parsedInput = Parser.Parse(input, BinaryOperationToFunction.GetKeys());
+            var parsedResult = Parser.Parse(input);
+            var firstArgument = double.Parse(parsedResult[0].GetItem());
+            var operation = parsedResult[1].GetItem();
+            var secondArgument = double.Parse(parsedResult[2].GetItem());
 
-            if (parsedInput[1] == "/" && parsedInput[2] == "0")
+            bool isValid = validators.All(validator => validator.IsValid(firstArgument, operation, secondArgument));
+
+            if (isValid)
             {
-                Console.WriteLine("Fuck You");
+                Console.WriteLine(BinaryOperationToFunction[char.Parse(operation)].Calculate(firstArgument, secondArgument));
             }
-            else
-            {
-                var firstNumber = double.Parse(parsedInput[0]);
-                var secondNumber = double.Parse(parsedInput[2]);
-
-                Console.WriteLine(BinaryOperationToFunction.Get(parsedInput[1]).Calculate(firstNumber, secondNumber));
-
-            }
+            
+            
         }
     }
 }

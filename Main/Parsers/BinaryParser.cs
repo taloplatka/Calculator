@@ -1,52 +1,39 @@
-﻿
-
-
-
+﻿//CR: remove newline here
 namespace Main.Parsers
 {
-    internal class BinaryParser
+    //CR: public and not internal class
+    public class BinaryParser
     {
         private readonly List<char> _operations;
 
-        public BinaryParser()
+        public BinaryParser(List<char> _operations)
         {
-            _operations = new List<char>();
-            _operations.Add('+');
-            _operations.Add('-');
-            _operations.Add('*');
-            _operations.Add('/');
+            this._operations = _operations;
         }
-        public List<string> Parse(string input, List<string> operations)
+
+        public List<ParsedItem> Parse(string input)
         {
-            List<string> parsedResult = new List<string>();
+            var parsedResult = new List<ParsedItem>();
             input = input.Trim();
-
-        
-            string firstNumber = input[0].ToString();
-            string operation = "";
-            string secondNumber = "";
-
 
             int operationIndex = 0;
            
-
-            foreach (var c in operations)
+            foreach (var operation in _operations)
             {
-                if (input.IndexOf(c) != -1)
+                if (input.IndexOf(operation) != -1)
                 {
-                    operationIndex = input.Substring(1).IndexOf(c);
+                    operationIndex = input.Substring(1).IndexOf(operation);
                     operationIndex++;
-                    operation = input[operationIndex].ToString();
                     break; 
                 }
             }
 
-            firstNumber = input.Substring(0, operationIndex);
-            secondNumber = input.Substring(operationIndex + 1);
+            string firstNumber = input.Substring(0, operationIndex);
+            string secondNumber = input.Substring(operationIndex + 1);
 
-            parsedResult.Add(firstNumber);
-            parsedResult.Add(operation);
-            parsedResult.Add(secondNumber);
+            parsedResult.Add(new ParsedItem(firstNumber));
+            parsedResult.Add(new ParsedItem(input[operationIndex].ToString()));
+            parsedResult.Add(new ParsedItem(secondNumber));
 
             return parsedResult;
         }

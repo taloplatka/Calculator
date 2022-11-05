@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿//CR: remove unused imports in all project
 
 namespace Main.Calculators.Abstract
 {
-    public abstract class BinaryCalculator
+    //CR: replace with interface
+    public  interface IBinaryCalculator
     {
-        public abstract double Calculate(double x, double y);
+        public double Calculate(double x, double y);
     }
 }

@@ -3,15 +3,16 @@ using Main.Calculators.Abstract;
 
 namespace Main.Calculators.BinaryCalculators
 {
-    internal class DivisionCalculator : BinaryCalculator
+    internal class DivisionCalculator : IBinaryCalculator
     {
-        override
+        
         public double Calculate(double x, double y)
         {
             if (y == 0)
             {
-                throw new ArgumentException("Cannot Divie By Zero");
+                throw new ArgumentException("Cannot Divide By Zero");
             }
+
             return x / y;
         }
     }
